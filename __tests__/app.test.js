@@ -22,13 +22,18 @@ describe('gitty routes', () => {
     );
   });
 
-  it('should login and redirect users to /api/v1/github/posts', async () => {
-    const req = await request
+  it.only('should login and redirect users to /api/v1/github/posts', async () => {
+    const res = await request
       .agent(app)
       .get('api/ve/github/login/callback?code=42')
       .redirects(1);
 
-    expect(req.body).toEqual({
+    console.log(
+      '🚀 ~ file: app.test.js ~ line 33 ~ expect ~ res.body',
+      res.body
+    );
+
+    expect(res.body).toEqual({
       id: expect.any(String),
       username: 'fake_github_user',
       email: 'not-real@example.com',
