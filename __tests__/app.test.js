@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../lib/app');
 const GitHubUser = require('../lib/models/GitHubUser');
 
-jest.mock('../lib/utils/__mocks__/github');
+jest.mock('../lib/utils/github');
 
 describe('gitty routes', () => {
   beforeEach(() => {
@@ -25,22 +25,19 @@ describe('gitty routes', () => {
   it.only('should login and redirect users to /api/v1/github/posts', async () => {
     const res = await request
       .agent(app)
-      .get('api/ve/github/login/callback?code=42')
+      .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
 
-    console.log(
-      '🚀 ~ file: app.test.js ~ line 33 ~ expect ~ res.body',
-      res.body
-    );
-
-    expect(res.body).toEqual({
-      id: expect.any(String),
-      username: 'fake_github_user',
-      email: 'not-real@example.com',
-      avatar: expect.any(String),
-      iat: expect.any(Number),
-      exp: expect.any(Number),
-    });
+    // console.log(res);
+    // expect(res.body).toEqual({
+    //   id: expect.any(String),
+    //   username: 'fake_github_user',
+    //   email: 'not-real@example.com',
+    //   avatar: expect.any(String),
+    //   iat: expect.any(Number),
+    //   exp: expect.any(Number),
+    // });
+    expect(res.req.path).toEqual('/api/v1/github/posts');
   });
 
   it('should allow logged in user to make a post via POST', async () => {
