@@ -1,3 +1,5 @@
+// Apparently I didn't start a github repo until I was done. Commit history is there.
+
 const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
