@@ -82,4 +82,15 @@ describe('gitty routes', () => {
       },
     ]);
   });
+
+  it('should logout a user aka delete a users cookie on sign out', async () => {
+    const agent = request.agent(app);
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+    const res = await agent.delete('/api/v1/github');
+    expect(res.body).toEqual({
+      success: true,
+      message: 'Signed Out',
+    });
+    expect(res.status).toEqual(200);
+  });
 });
