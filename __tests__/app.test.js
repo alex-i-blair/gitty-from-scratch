@@ -55,4 +55,31 @@ describe('gitty routes', () => {
         });
       });
   });
+
+  it('should allow logged in user to view all posts', async () => {
+    const agent = request.agent(app);
+
+    await agent.get('/api/v1/github/login/callback?code=42').redirects(1);
+
+    await agent
+      .post('/api/v1/posts')
+      .send({ username: 'test_user', post: 'Text Post' });
+    await agent
+      .post('/api/v1/posts')
+      .send({ username: 'test_user2', post: 'Text Post 2' });
+
+    const res = await agent.get('/api/v1/posts');
+    expect(res.body).toEqual([
+      {
+        id: expect.any(String),
+        post: 'Text Post',
+        username: 'test_user',
+      },
+      {
+        id: expect.any(String),
+        post: 'Text Post 2',
+        username: 'test_user2',
+      },
+    ]);
+  });
 });
