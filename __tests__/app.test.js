@@ -94,4 +94,13 @@ describe('gitty routes', () => {
     });
     expect(res.status).toEqual(200);
   });
+
+  it('should return an array of quotes from three apis', () => {
+    const agent = request.agent(app);
+    const quote = { author: expect.any(String), content: expect.any(String) };
+    const expected = [quote, quote, quote];
+    return agent
+      .get('/api/v1/quotes')
+      .then((req) => expect(req.body).toEqual(expected));
+  });
 });
