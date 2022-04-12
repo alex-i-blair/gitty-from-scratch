@@ -29,15 +29,7 @@ describe('gitty routes', () => {
       .get('/api/v1/github/login/callback?code=42')
       .redirects(1);
 
-    expect(res.body).toEqual({
-      id: expect.any(String),
-      username: 'fake_github_user',
-      email: 'not-real@example.com',
-      avatar: expect.any(String),
-      iat: expect.any(Number),
-      exp: expect.any(Number),
-    });
-    expect(res.req.path).toEqual('/api/v1/github/posts');
+    expect(res.req.path).toEqual('/api/v1/posts');
   });
 
   it('should allow logged in user to make a post via POST', async () => {
